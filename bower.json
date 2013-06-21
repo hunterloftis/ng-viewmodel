@@ -1,0 +1,8 @@
+{
+  "name": "ng-boilerplate",
+  "version": "0.2.0-SNAPSHOT",
+  "devDependencies": {
+    "angular-ui-utils": "~0.0.1",
+    "ui-router": "~0.0.1"
+  }
+}
