@@ -1,21 +1,61 @@
-angular.module( 'ngBoilerplate', [
-  'templates-app',
-  'templates-component',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about',
-  'ui.route'
-])
+angular
+  .module('dtv.demo.routes', ['ui.state'])
 
-.config( function myAppConfig ( $routeProvider ) {
-  $routeProvider.otherwise({ redirectTo: '/home' });
-})
+  .config(function($routeProvider, $stateProvider) {
 
-.run( function run ( titleService ) {
-  titleService.setSuffix( ' | ngBoilerplate' );
-})
+    // automatically redirect to #/
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
-})
+    $routeProvider
+      .otherwise({ redirectTo: '/test' });
 
-;
+    console.log('wtf');
 
+    $stateProvider
+
+      // route #/
+
+      .state('browse', {
+        url: '/',
+        controller: function($scope, $state, $stateParams) {
+          $scope.vm = {
+            showModal: false
+          };
+        }
+      })
+
+      // route #/movie/:movie
+
+      .state('browse.movie', {
+        url: '/movie/:movie',
+        controller: function($scope, $state, $stateParams) {
+          $scope.vm.showModal = true;
+          $scope.vm.modalView = 'movie';
+          $scope.vm.movieTitle = $stateParams.movie;
+        }
+      })
+
+      // route #/movie/:movie/rent
+
+      .state('browse.movie.rent', {
+        url: '/rent',
+        controller: function($scope, $state, $stateParams) {
+          $scope.vm.modalView = 'rent';
+        }
+      })
+
+      // route #/celebrity/:name
+
+      .state('browse.celebrity', {
+        url: '/celebrity/:name',
+        controller: function($scope, $state, $stateParams) {
+          $scope.vm.showModal = true;
+          $scope.vm.modalView = 'celebrity';
+          $scope.vm.celebrityName = $stateParams.name;
+        }
+      });
+
+  })
+
+  .controller('RouteController', function($scope, $location) {
+
+  });

@@ -1,10 +1,9 @@
 module.exports = function ( grunt ) {
-  
-  /** 
+
+  /**
    * Load required Grunt tasks. These are installed based on the versions listed
    * in `package.json` when you do `npm install` in this directory.
    */
-  grunt.loadNpmTasks('grunt-recess');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -16,7 +15,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-html2js');
 
   /**
-   * This is the configuration object Grunt uses to give each plugin its 
+   * This is the configuration object Grunt uses to give each plugin its
    * instructions.
    */
   grunt.initConfig({
@@ -32,12 +31,12 @@ module.exports = function ( grunt ) {
     pkg: grunt.file.readJSON("package.json"),
 
     /**
-     * The banner is the comment that is placed at the top of our compiled 
+     * The banner is the comment that is placed at the top of our compiled
      * source files. It is first processed as a Grunt template, where the `<%=`
      * pairs are evaluated based on this very configuration object.
      */
     meta: {
-      banner: 
+      banner:
         '/**\n' +
         ' * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
         ' * <%= pkg.homepage %>\n' +
@@ -51,16 +50,15 @@ module.exports = function ( grunt ) {
      * This is a collection of file definitions we use in the configuration of
      * build tasks. `js` is all project javascript, less tests. `atpl` contains
      * our reusable components' template HTML files, while `ctpl` contains the
-     * same, but for our app's code. `html` is just our main HTML file and 
+     * same, but for our app's code. `html` is just our main HTML file and
      * `less` is our main stylesheet.
      */
     src: {
-      js: [ 'src/**/*.js', '!src/**/*.spec.js' ], 
+      js: [ 'src/**/*.js', '!src/**/*.spec.js' ],
       atpl: [ 'src/app/**/*.tpl.html' ],
       ctpl: [ 'src/components/**/*.tpl.html' ],
       tpljs: [ '<%= distdir %>/tmp/**/*.js' ],
       html: [ 'src/index.html' ],
-      less: 'src/less/main.less',
       unit: [ 'src/**/*.spec.js' ]
     },
 
@@ -77,9 +75,7 @@ module.exports = function ( grunt ) {
      */
     vendor: {
       js: [
-        'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
-        'vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
-        'vendor/angular-ui-utils/modules/route/route.js'
+        'vendor/ui-router/release/angular-ui-router.js'
       ]
     },
 
@@ -95,13 +91,13 @@ module.exports = function ( grunt ) {
     copy: {
       assets: {
         files: [
-          { 
+          {
             src: [ '**' ],
             dest: '<%= distdir %>/assets/',
             cwd: 'src/assets',
             expand: true
           }
-       ]   
+       ]
       }
     },
 
@@ -120,7 +116,7 @@ module.exports = function ( grunt ) {
        *
        * The `options` array allows us to specify some customization for this
        * operation. In this case, we are adding a banner to the top of the file,
-       * based on the above definition of `meta.banner`. This is simply a 
+       * based on the above definition of `meta.banner`. This is simply a
        * comment with copyright informaiton.
        */
       dist: {
@@ -139,7 +135,7 @@ module.exports = function ( grunt ) {
        * get right.
        */
       libs: {
-        src: [ 
+        src: [
           'build/angular/angular.js'
         ],
         dest: '<%= distdir %>/assets/libs.js'
@@ -171,35 +167,16 @@ module.exports = function ( grunt ) {
     },
 
     /**
-     * recess handles our LESS compilation and uglification automatically. Only
-     * our `main.less` file is included in compilation; all other files must be
-     * imported from this file.
-     */
-    recess: {
-      build:  {
-        src: [ '<%= src.less %>' ],
-        dest: '<%= distdir %>/assets/<%= pkg.name %>.css',
-        options: {
-          compile: true,
-          compress: true,
-          noUnderscores: false,
-          noIDs: false,
-          zeroUnits: false
-        }
-      }
-    },
-
-    /**
      * `jshint` defines the rules of our linter as well as which files we should
      * check. This file, all java script sources, and all our unit tests are
-     * linted based on the policies listed in `options`. But we can allow 
+     * linted based on the policies listed in `options`. But we can allow
      * specify exclusionary patterns for external components by prefixing them
      * with an exclamation point (!).
      */
     jshint: {
-      src: [ 
-        'Gruntfile.js', 
-        '<%= src.js %>', 
+      src: [
+        'Gruntfile.js',
+        '<%= src.js %>',
         '<%= src.tpljs %>',
         '<%= src.unit %>',
         '!src/components/placeholders/**/*'
@@ -225,7 +202,7 @@ module.exports = function ( grunt ) {
     /**
      * HTML2JS is a Grunt plugin originally written by the AngularUI Booststrap
      * team and updated to Grunt 0.4 by me. It takes all of your template files
-     * and places them into JavaScript files as strings that are added to 
+     * and places them into JavaScript files as strings that are added to
      * AngularJS's template cache. This means that the templates too become part
      * of the initial payload as one JavaScript file. Neat!
      */
@@ -271,13 +248,13 @@ module.exports = function ( grunt ) {
 
     /**
      * And for rapid development, we have a watch set up that checks to see if
-     * any of the files listed below change, and then to execute the listed 
+     * any of the files listed below change, and then to execute the listed
      * tasks when they do. This just saves us from having to type "grunt" into
      * the command-line every time we want to see what we're working on; we can
      * instead just leave "grunt watch" running in a background terminal. Set it
      * and forget it, as Ron Popeil used to tell us.
      *
-     * But we don't need the same thing to happen for all the files. 
+     * But we don't need the same thing to happen for all the files.
      */
     delta: {
       /**
@@ -307,7 +284,7 @@ module.exports = function ( grunt ) {
        * (excepting uglification).
        */
       src: {
-        files: [ 
+        files: [
           '<%= src.js %>'
         ],
         tasks: [ 'jshint:src', 'karma:unit:run', 'concat:dist', 'ngmin:dist', 'uglify:dist' ]
@@ -318,7 +295,7 @@ module.exports = function ( grunt ) {
        * files, so this is probably not very useful.
        */
       assets: {
-        files: [ 
+        files: [
           'src/assets/**/*'
         ],
         tasks: [ 'copy' ]
@@ -336,24 +313,16 @@ module.exports = function ( grunt ) {
        * When our templates change, we only add them to the template cache.
        */
       tpls: {
-        files: [ 
-          '<%= src.atpl %>', 
+        files: [
+          '<%= src.atpl %>',
           '<%= src.ctpl %>'
         ],
         tasks: [ 'html2js', 'concat:dist', 'ngmin:dist', 'uglify:dist' ]
       },
 
       /**
-       * When the CSS files change, we need to compile and minify just them.
-       */
-      less: {
-        files: [ 'src/**/*.less' ],
-        tasks: [ 'recess' ]
-      },
-
-      /**
        * When a unit test file changes, we only want to linit it and run the
-       * unit tests. However, since the `app` module requires the compiled 
+       * unit tests. However, since the `app` module requires the compiled
        * templates, we must also run the `html2js` task.
        */
       unittest: {
@@ -382,15 +351,15 @@ module.exports = function ( grunt ) {
    * The default task is to build.
    */
   grunt.registerTask( 'default', [ 'build' ] );
-  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'karma:continuous', 'concat', 'ngmin:dist', 'uglify', 'recess', 'index', 'copy'] );
+  grunt.registerTask( 'build', ['clean', 'html2js', 'jshint', 'karma:continuous', 'concat', 'ngmin:dist', 'uglify', 'index', 'copy'] );
 
   /**
    * A task to build the project, without some of the slower processes. This is
    * used during development and testing and is part of the `watch`.
    */
-  grunt.registerTask( 'quick-build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'recess', 'index', 'copy'] );
+  grunt.registerTask( 'quick-build', ['clean', 'html2js', 'jshint', 'test', 'concat', 'index', 'copy'] );
 
-  /** 
+  /**
    * The index.html template includes the stylesheet and javascript sources
    * based on dynamic names calculated in this Gruntfile. This task compiles it.
    */
