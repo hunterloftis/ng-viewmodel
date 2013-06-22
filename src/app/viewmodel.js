@@ -1,8 +1,6 @@
 // should listen for routeChange events and automatically apply any matching states
 // should also be able to use like:
 // viewmodel.set('state.path.here', { options: 'here', normally: 'from', the: 'url' })
-// should also be able to nest viewmodels like this?
-// <div sdw-viewmodel='vm'><h1>{{ vm.title }}</h1><div sdw-viewmodel='vm.main'><p>{{ vm.main.description }}</p></div></div>
 
 angular
   .module('sdw.viewmodel', [])
@@ -27,6 +25,10 @@ angular
       return this;
     };
 
+    // TODO: is there another way to get $rootScope access?
+    // currently, this won't work unless a <viewmodel> directive exists on the page
+    // (since that triggers the $get() when the directive's dependencies get injected)
+
     this.$get = function($rootScope, $location, $routeParams) {
 
       Object.keys(states).forEach(buildRoute);
@@ -35,19 +37,6 @@ angular
 
       console.log('states:', states);
       console.log('routes:', routes);
-
-      function getAncestors(object, path) {
-        var chain = path.split('.');
-        var ancestors = [];
-        var ancestorPath;
-
-        for(var len = 1; len <= chain.length; len++) {
-          ancestorPath = chain.slice(0, len).join('.');
-          ancestors.push(object[ancestorPath]);
-        }
-
-        return ancestors;
-      }
 
       function buildRoute(stateName, index) {
         var fullRoute = '';
@@ -59,7 +48,7 @@ angular
 
         routes.push({
           string: fullRoute,
-          state: states[stateName],
+          state: stateName,
           regex: regex.re,
           params: regex.params
         });
@@ -71,8 +60,8 @@ angular
 
       function onLocationChange() {
         console.log('path:', $location.path());
-        var match = matchRoute($location.path()) || { state: defaultState, params: [] };
-        applyState(match.state, match.params);
+        var match = matchRoute($location.path()) || { state: defaultState, params: {} };
+        applyState($rootScope, match.state, match.params);
       }
     };
 
@@ -113,13 +102,14 @@ angular
       var dst = {};
 
       // Escape regexp special characters.
+
       var routeString = '^' + route.replace(/[-\/\\^$:*+?.()|[\]{}]/g, "\\$&") + '$';
+
+      // replace each :param in `routeString` with a capturing group
 
       var re = /\\([:*])(\w+)/g;
       var lastMatchedIndex = 0;
       var paramMatch;
-
-      // replace each :param in `routeString` with a capturing group
 
       while ((paramMatch = re.exec(routeString)) !== null) {
         regex += routeString.slice(lastMatchedIndex, paramMatch.index);
@@ -140,14 +130,55 @@ angular
       };
     }
 
-    function applyState(name, params) {
-      console.log('applying state:', name, params);
+    function applyState(scope, name, params) {
+      var newStateValues = {};
+      var ancestors = getAncestors(states, name);
+
+      ancestors.forEach(doAction);
+      scope.$broadcast('viewmodel:state', newStateValues);
+
+      function doAction(state, index) {
+        var action = state.action;
+        if (!action) return;
+
+        action(newStateValues, params);
+      }
+    }
+
+    function getAncestors(object, path) {
+      var chain = path.split('.');
+      var ancestors = [];
+      var ancestorPath;
+
+      for(var len = 1; len <= chain.length; len++) {
+        ancestorPath = chain.slice(0, len).join('.');
+        ancestors.push(object[ancestorPath]);
+      }
+
+      return ancestors;
     }
   })
 
-  .directive('sdwViewmodel', function(viewmodel) {
+  .directive('sdwViewmodel', function($rootScope, viewmodel) {
     return {
       restrict: 'EA',
-      transclude: true
+      link: viewmodelLink
     };
+
+    function viewmodelLink(scope, element, attrs, controller) {
+      var vmName = attrs.model || attrs.sdwViewmodel;
+
+      scope[vmName] = scope[vmName] || {};
+
+      $rootScope.$on('viewmodel:state', onState);
+
+      function onState(event, newState) {
+        console.log('applying state to scope:', newState);
+        console.log('oldState:', scope);
+        for (var key in newState) {
+          scope[vmName][key] = newState[key];
+        }
+      }
+    }
   });
+
