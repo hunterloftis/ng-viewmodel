@@ -16,24 +16,28 @@
 
       <h1>{{ test }}</h1>
 
-      <input model='vm.showModal' />
-
       <section class='modal' ng-show='vm.showModal'>
 
-        <article class='movie'>
-          <h2>{{ vm.movieTitle }}</h2>
-          <a href='#/modal/celebrity/Catherine Steadman'>Celebrity (Catherine Steadman)</a>
-        </article>
+        <ng-switch on='vm.modalView'>
 
-        <article class='celebrity'>
-          <h2>{{ vm.celebrityName }}</h2>
-          <p>Now try using the back button</p>
-        </article>
+          <h1>Should say test: {{ test }}</h1>
 
-        <article class='rent'>
-          <h2>Rent this movie</h2>
-          <h3>{{ vm.movieTitle }}</h3>
-        </article>
+          <article class='movie' ng-switch='movie'>
+            <h2>{{ vm.movieTitle }}</h2>
+            <a href='#/celebrity/Catherine Steadman'>Celebrity (Catherine Steadman)</a>
+          </article>
+
+          <article class='celebrity' ng-switch='celebrity'>
+            <h2>{{ vm.celebrityName }}</h2>
+            <p>Now try using the back button</p>
+          </article>
+
+          <article class='rent' ng-switch='rent'>
+            <h2>Rent this movie</h2>
+            <h3>{{ vm.movieTitle }}</h3>
+          </article>
+
+        </ng-switch>
 
       </section>
 

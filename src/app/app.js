@@ -3,10 +3,7 @@ angular
 
   .config(function(viewmodelProvider) {
 
-    console.log('viewmodelProvider');
-
     viewmodelProvider
-
       .otherwise('browse')
 
       // route #/browse
@@ -52,7 +49,7 @@ angular
         action: function(vm, params) {
           vm.showModal = true;
           vm.modalView = 'celebrity';
-          vm.celebrityName = $stateParams.name;
+          vm.celebrityName = params.name;
         }
       });
 

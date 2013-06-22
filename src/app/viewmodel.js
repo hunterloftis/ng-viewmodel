@@ -35,9 +35,6 @@ angular
 
       $rootScope.$on('$locationChangeSuccess', onLocationChange);
 
-      console.log('states:', states);
-      console.log('routes:', routes);
-
       function buildRoute(stateName, index) {
         var fullRoute = '';
         var ancestors = getAncestors(states, stateName);
@@ -59,7 +56,6 @@ angular
       }
 
       function onLocationChange() {
-        console.log('path:', $location.path());
         var match = matchRoute($location.path()) || { state: defaultState, params: {} };
         applyState($rootScope, match.state, match.params);
       }
@@ -173,8 +169,6 @@ angular
       $rootScope.$on('viewmodel:state', onState);
 
       function onState(event, newState) {
-        console.log('applying state to scope:', newState);
-        console.log('oldState:', scope);
         for (var key in newState) {
           scope[vmName][key] = newState[key];
         }
