@@ -1,61 +1,63 @@
 angular
-  .module('dtv.demo.routes', ['ui.state'])
+  .module('dtv.demo.routes', ['sdw.viewmodel'])
 
-  .config(function($routeProvider, $stateProvider) {
+  .config(function(viewmodelProvider) {
 
-    // automatically redirect to #/
+    console.log('viewmodelProvider');
 
-    $routeProvider
-      .otherwise({ redirectTo: '/test' });
+    viewmodelProvider
 
-    console.log('wtf');
+      .otherwise('browse')
 
-    $stateProvider
-
-      // route #/
+      // route #/browse
 
       .state('browse', {
-        url: '/',
-        controller: function($scope, $state, $stateParams) {
-          $scope.vm = {
-            showModal: false
-          };
+        route: '',
+        action: function(vm, params) {
+          vm.showModal = false;
         }
       })
 
       // route #/movie/:movie
 
       .state('browse.movie', {
-        url: '/movie/:movie',
-        controller: function($scope, $state, $stateParams) {
-          $scope.vm.showModal = true;
-          $scope.vm.modalView = 'movie';
-          $scope.vm.movieTitle = $stateParams.movie;
+        route: '/movie/:movie',
+        action: function(vm, params) {
+          vm.showModal = true;
+          vm.modalView = 'movie';
+          vm.movieTitle = params.movie;
+        }
+      })
+
+      .state('browse.test', {
+        route: '/a/:aid/b/:bid/finally',
+        action: function(vm, params) {
+
         }
       })
 
       // route #/movie/:movie/rent
 
       .state('browse.movie.rent', {
-        url: '/rent',
-        controller: function($scope, $state, $stateParams) {
-          $scope.vm.modalView = 'rent';
+        route: '/rent',
+        action: function(vm, params) {
+          modalView = 'rent';
         }
       })
 
       // route #/celebrity/:name
 
       .state('browse.celebrity', {
-        url: '/celebrity/:name',
-        controller: function($scope, $state, $stateParams) {
-          $scope.vm.showModal = true;
-          $scope.vm.modalView = 'celebrity';
-          $scope.vm.celebrityName = $stateParams.name;
+        route: '/celebrity/:name',
+        action: function(vm, params) {
+          vm.showModal = true;
+          vm.modalView = 'celebrity';
+          vm.celebrityName = $stateParams.name;
         }
       });
 
   })
 
   .controller('RouteController', function($scope, $location) {
-
+    $scope.test = 'Test Title';
   });

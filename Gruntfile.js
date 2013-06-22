@@ -75,7 +75,7 @@ module.exports = function ( grunt ) {
      */
     vendor: {
       js: [
-        'vendor/ui-router/release/angular-ui-router.js'
+
       ]
     },
 
@@ -188,7 +188,6 @@ module.exports = function ( grunt ) {
         'Gruntfile.js'
       ],
       options: {
-        curly: true,
         immed: true,
         newcap: true,
         noarg: true,
@@ -346,6 +345,8 @@ module.exports = function ( grunt ) {
    */
   grunt.renameTask( 'watch', 'delta' );
   grunt.registerTask( 'watch', [ 'default', 'karma:unit', 'delta' ] );
+
+  grunt.registerTask('lazy', ['clean', 'html2js', 'jshint', 'concat', 'ngmin:dist', 'uglify', 'index', 'copy', 'delta']);
 
   /**
    * The default task is to build.

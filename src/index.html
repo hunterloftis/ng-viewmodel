@@ -7,31 +7,34 @@
 
     </style>
 
-    <!--[if IE 7>
-    <link rel="stylesheet" href="assets/font-awesome-ie7.min.css>
-    <![endif]-->
-
   </head>
-  <body>
+  <body ng-controller='RouteController'>
 
-    <a href='#/'>Home</a>
     <a href='#/modal/The Shawshank Redemption'>Modal (Shawshank)</a>
 
-    <section>
-      <section class='modal'>
+    <section sdw-viewmodel='vm'>
+
+      <h1>{{test}}</h1>
+
+      <section class='modal' ng-show='vm.showModal'>
+
         <article class='movie'>
-          <h2>{{movieTitle}}</h2>
+          <h2>{{ vm.movieTitle }}</h2>
           <a href='#/modal/celebrity/Catherine Steadman'>Celebrity (Catherine Steadman)</a>
         </article>
+
         <article class='celebrity'>
-          <h2>{{celebrityName}}</h2>
+          <h2>{{ vm.celebrityName }}</h2>
           <p>Now try using the back button</p>
         </article>
+
         <article class='rent'>
           <h2>Rent this movie</h2>
-          <h3>{{movieTitle}}</h3>
+          <h3>{{ vm.movieTitle }}</h3>
         </article>
+
       </section>
+
     </section>
 
     <!-- libs.js contains all of the concatenated third-party libraries -->
