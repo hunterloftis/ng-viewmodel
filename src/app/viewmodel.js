@@ -84,11 +84,10 @@ angular
 
       for (var i = 0; i < routes.length; i++) {
         route = routes[i];
-        params = path.match(route.regex);
+        paramValues = path.match(route.regex);
 
-        if (params) {
-          console.log('match! params:', params);
-          params.forEach(mapParam);
+        if (paramValues) {
+          paramValues.slice(1).forEach(mapParam);
           return {
             state: route.state,
             params: paramMap
@@ -98,10 +97,15 @@ angular
 
       return undefined;
 
-      function mapParam(name, index) {
-        paramMap[name] = params[index + 1];
+      function mapParam(val, index) {
+        var name = route.params[index];
+        paramMap[name] = val;
       }
     }
+
+    // build a regex test for a route string in /a/format/:like/this
+    // heavily based on ng-router and angular-ui router
+    // "A programmer had a problem, which he decided to solve with RegEx. Now he had two problems." - paraphrased
 
     function regexRoute(route) {
       var regex = '';
@@ -115,15 +119,9 @@ angular
       var lastMatchedIndex = 0;
       var paramMatch;
 
-      console.log('');
-      console.log('route:', route);
-      console.log('routeString:', routeString);
-
       // replace each :param in `routeString` with a capturing group
 
       while ((paramMatch = re.exec(routeString)) !== null) {
-        console.log('paramMatch:', paramMatch);
-
         regex += routeString.slice(lastMatchedIndex, paramMatch.index);
 
         if (paramMatch[1] === ':') regex += '([^\\/]*)';
@@ -134,8 +132,6 @@ angular
       }
 
       regex += routeString.slice(lastMatchedIndex);
-
-      console.log('regex:', regex);
 
       return {
         string: regex,
