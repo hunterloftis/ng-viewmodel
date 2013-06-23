@@ -6,6 +6,7 @@ angular
   .module('sdw.viewmodel', [])
 
   .provider('viewmodel', function() {
+    var self = this;
     var states = {};
     var defaultState;
     var routes = [];
@@ -34,6 +35,9 @@ angular
       Object.keys(states).forEach(buildRoute);
 
       $rootScope.$on('$locationChangeSuccess', onLocationChange);
+
+      // TODO: check to see if this works
+      self.applyState = applyState;
 
       function buildRoute(stateName, index) {
         var fullRoute = '';

@@ -10,33 +10,41 @@
   </head>
   <body ng-controller='RouteController'>
 
-    <a href='#'>Home</a>
-    <a href='#/movie/The Shawshank Redemption'>Modal (Shawshank)</a>
+    <h1>Deep Linking Test Page</h1>
+    <h2>(with modals)</h2>
 
     <section sdw-viewmodel='vm'>
 
-      <h1>{{ test }}</h1>
+      <ul>
+        <li ng-show='vm.showModal'><a href='#'>Hide Modal</a></li>
+        <li ng-hide='vm.showModal'><a href='#/movie/123'>Modal (Shawshank)</a></li>
+        <li ng-hide='vm.showModal'><a href='#/movie/234'>Modal (Shawshank)</a></li>
+        <li ng-hide='vm.showModal'><a href='#/movie/345'>Modal (Shawshank)</a></li>
+      </ul>
 
       <section class='modal' ng-show='vm.showModal'>
 
         <ng-switch on='vm.modalView'>
 
-          <h1>Should say test: {{ test }}</h1>
-
           <article class='movie' ng-switch-when='movie'>
-            <h2>{{ vm.movieTitle }}</h2>
-            <a href='#/celebrity/Catherine Steadman'>Celebrity (Catherine Steadman)</a>
-            <a href='#/movie/{{ vm.movieTitle }}/rent'>Rent this movie</a>
+            <h2>Movie Modal</h2>
+            <h3>{{ movieData().title }}</h3>
+            <ul>
+              <li><a href='#/celebrity/{{ movieData().celeb }}'>See Celebrity</a></li>
+              <li><a href='#/movie/{{ vm.movieId }}/rent'>Rent this movie</a></li>
+            </ul>
           </article>
 
           <article class='celebrity' ng-switch-when='celebrity'>
-            <h2>{{ vm.celebrityName }}</h2>
-            <p>Now try using the back button</p>
+            <h2>Celebrity</h2>
+            <h3>{{ celebData().name }}</h3>
+            <p>(Now use the back button to get back)</p>
           </article>
 
           <article class='rent' ng-switch-when='rent'>
-            <h2>Rent this movie</h2>
-            <h3>{{ vm.movieTitle }}</h3>
+            <h2>Rent this movie:</h2>
+            <h3>{{ movieData().title }}</h3>
+            <button ng-click='onRent()'>Rent me</button>
           </article>
 
         </ng-switch>
