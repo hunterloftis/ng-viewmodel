@@ -10,6 +10,7 @@
   </head>
   <body ng-controller='RouteController'>
 
+    <a href='#'>Home</a>
     <a href='#/movie/The Shawshank Redemption'>Modal (Shawshank)</a>
 
     <section sdw-viewmodel='vm'>
@@ -22,17 +23,18 @@
 
           <h1>Should say test: {{ test }}</h1>
 
-          <article class='movie' ng-switch='movie'>
+          <article class='movie' ng-switch-when='movie'>
             <h2>{{ vm.movieTitle }}</h2>
             <a href='#/celebrity/Catherine Steadman'>Celebrity (Catherine Steadman)</a>
+            <a href='#/movie/{{ vm.movieTitle }}/rent'>Rent this movie</a>
           </article>
 
-          <article class='celebrity' ng-switch='celebrity'>
+          <article class='celebrity' ng-switch-when='celebrity'>
             <h2>{{ vm.celebrityName }}</h2>
             <p>Now try using the back button</p>
           </article>
 
-          <article class='rent' ng-switch='rent'>
+          <article class='rent' ng-switch-when='rent'>
             <h2>Rent this movie</h2>
             <h3>{{ vm.movieTitle }}</h3>
           </article>

@@ -26,19 +26,12 @@ angular
         }
       })
 
-      .state('browse.test', {
-        route: '/a/:aid/b/:bid/finally',
-        action: function(vm, params) {
-
-        }
-      })
-
       // route #/movie/:movie/rent
 
       .state('browse.movie.rent', {
         route: '/rent',
         action: function(vm, params) {
-          modalView = 'rent';
+          vm.modalView = 'rent';
         }
       })
 
