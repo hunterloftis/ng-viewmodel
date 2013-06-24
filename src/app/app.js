@@ -48,7 +48,7 @@ angular
 
   })
 
-  .controller('RouteController', function($scope, viewmodel) {
+  .controller('RouteController', function($scope, $location, viewmodel) {
 
     $scope.movies = [
       { id: 123, title: 'The Shawshank Redemption', celeb: 333 },
@@ -76,7 +76,7 @@ angular
 
     $scope.onRent = function() {
       alert('Rented ' + $scope.movieData().title + '!');
-      window.location.hash = '';
+      $location.path('');
     };
 
   });
