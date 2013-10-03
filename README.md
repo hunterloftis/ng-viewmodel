@@ -10,16 +10,19 @@ View
 <body ng-controller='DemoController'>
   <section sdw-viewmodel='vm'>
     <div class='overlay' ng-show='vm.showModal'>
+
       <article ng-show='vm.article === "first"'>
         <h1>First</h1>
         <a href='#/article/{{ vm.article }}/buy'>Buy</a>
         <p ng-show='vm.showPrice'>$10.00</p>
       </article>
+
       <article ng-show='vm.article === "second"'>
         <h2>Second</h2>
         <a href='#/article/{{ vm.article }}/buy'>Buy</a>
         <p ng-show='vm.showPrice'>$14.00</p>
       </article>
+
     </div>
   </section>
 </body>
@@ -33,6 +36,7 @@ angular
   .config(function(viewmodelProvider) {
 
     viewmodelProvider
+
       .state('default', {
         route: '',
         action: function(vm, params) {
@@ -41,6 +45,7 @@ angular
           vm.showPrice = false;
         }
       })
+
       .state('article', {
         route: '/article/:article',
         action: function(vm, params) {
@@ -48,6 +53,7 @@ angular
           vm.article = params.article;
         }
       })
+
       .state('article.buy', {
         route: '/buy',
         action: function(vm, params) {
