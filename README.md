@@ -25,7 +25,7 @@ the color of an element.
 4. In your app's config, inject the viewmodelProvider and set up your routes and the states you'd like attached to each:
 
 ```js
-viewmodelProvider.state('message', {
+viewmodelProvider.state('hello', {
   route: '/hello/:name',
   action: function(viewmodel, params) {
     viewmodel.helloIsVisible = true;
