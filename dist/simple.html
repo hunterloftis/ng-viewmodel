@@ -1,0 +1,103 @@
+<!doctype html>
+<html ng-app="examples.simple">
+  <head>
+    <title>State-Based Routing Demo</title>
+
+    <style>
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #333;
+        color: #fff;
+        font-family: 'helvetica neue', helvetica, arial, sans-serif;
+        font-weight: 200;
+        text-align: center;
+      }
+
+      h1, h2, h3, h4 {
+        font-weight: 200;
+        text-shadow: 0 -1px 1px #000;
+      }
+
+      a {
+        color: #fa0;
+        text-decoration: none;
+      }
+
+      ul {
+        text-align: left;
+        margin: 0 auto;
+        display: inline-block;
+        line-height: 24px;
+      }
+
+      .modal {
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        margin-left: -25%;
+        margin-top: -100%;
+        width: 50%;
+        height: 50%;
+        background: #333;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        transition: all 0.5s ease-in-out;
+      }
+
+      .modal.active {
+        margin-top: 0;
+      }
+
+      .modal-close {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+      }
+
+      .overlay {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.33);
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <a href='#/article/first'>First article</a>,
+    <a href='#/article/second'>Second article</a>
+    <section sdw-viewmodel='vm'>
+      <div class='modal' ng-class='{ active: vm.showModal }'>
+
+        <ng-switch on='vm.article'>
+          <article ng-switch-when='first'>
+            <h1>First</h1>
+            <a href='#/article/{{ vm.article }}/buy'>Buy</a>
+            <p ng-show='vm.showPrice'>$10.00</p>
+          </article>
+
+          <article ng-switch-when='second'>
+            <h2>Second</h2>
+            <a href='#/article/{{ vm.article }}/buy'>Buy</a>
+            <p ng-show='vm.showPrice'>$14.00</p>
+          </article>
+        </ng-switch>
+
+      </div>
+    </section>
+
+    <!-- libs.js contains all of the concatenated third-party libraries -->
+    <script type="text/javascript" src="assets/libs.js"></script>
+
+    <!-- compiled, minified application code -->
+    <script type="text/javascript" src="assets/sdw-viewmodel.js"></script>
+
+  </body>
+</html>

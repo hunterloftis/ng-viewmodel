@@ -343,6 +343,7 @@ module.exports = function ( grunt ) {
    * `delta`) and then add a new task called `watch` that does a clean build
    * before watching for changes.
    */
+
   grunt.renameTask( 'watch', 'delta' );
   grunt.registerTask( 'watch', [ 'default', 'karma:unit', 'delta' ] );
 
@@ -365,7 +366,8 @@ module.exports = function ( grunt ) {
    * based on dynamic names calculated in this Gruntfile. This task compiles it.
    */
   grunt.registerTask( 'index', 'Process index.html template', function () {
-    grunt.file.copy('src/index.html', grunt.config('distdir') + '/index.html', { process: grunt.template.process });
+    grunt.file.copy('src/movies.html', grunt.config('distdir') + '/movies.html', { process: grunt.template.process });
+    grunt.file.copy('src/simple.html', grunt.config('distdir') + '/simple.html', { process: grunt.template.process });
   });
 
 };

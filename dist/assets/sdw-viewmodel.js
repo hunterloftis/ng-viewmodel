@@ -1,94 +1,11 @@
 /**
- * ng-boilerplate - v0.2.0-SNAPSHOT - 2013-06-24
- * http://bit.ly/ng-boilerplate
+ * sdw-viewmodel - v0.0.1 - 2013-10-04
+ * 
  *
- * Copyright (c) 2013 Josh David Miller
+ * Copyright (c) 2013 Hunter Loftis
  * Licensed MIT <https://raw.github.com/joshdmiller/ng-boilerplate/master/LICENSE>
  */
 (function ( window, angular, undefined ) {
-
-angular
-  .module('dtv.demo.routes', ['sdw.viewmodel'])
-
-  .config(function(viewmodelProvider) {
-
-    viewmodelProvider
-      .otherwise('browse')
-
-      // route #/browse
-
-      .state('browse', {
-        route: '',
-        action: function(vm, params) {
-          vm.showModal = false;
-        }
-      })
-
-      // route #/movie/:movie
-
-      .state('browse.movie', {
-        route: '/movie/:movie',
-        action: function(vm, params) {
-          vm.showModal = true;
-          vm.modalView = 'movie';
-          vm.movieId = +params.movie;
-        }
-      })
-
-      // route #/movie/:movie/rent
-
-      .state('browse.movie.rent', {
-        route: '/rent',
-        action: function(vm, params) {
-          vm.modalView = 'rent';
-        }
-      })
-
-      // route #/celebrity/:name
-
-      .state('browse.celebrity', {
-        route: '/celebrity/:celeb',
-        action: function(vm, params) {
-          vm.showModal = true;
-          vm.modalView = 'celebrity';
-          vm.celebId = +params.celeb;
-        }
-      });
-
-  })
-
-  .controller('RouteController', function($scope, $location, viewmodel) {
-
-    $scope.movies = [
-      { id: 123, title: 'The Shawshank Redemption', celeb: 333 },
-      { id: 234, title: 'Garden State', celeb: 444 },
-      { id: 345, title: 'Crouching Tiger, Hidden Dragon', celeb: 555 }
-    ];
-
-    $scope.celebs = [
-      { id: 333, name: 'Morgan Freeman' },
-      { id: 444, name: 'Zach Braff' },
-      { id: 555, name: 'Chow Yun Fat' }
-    ];
-
-    $scope.movieData = function() {
-      for (var i = 0; i < $scope.movies.length; i++) {
-        if ($scope.movies[i].id === $scope.vm.movieId) return $scope.movies[i];
-      }
-    };
-
-    $scope.celebData = function() {
-      for (var i = 0; i < $scope.celebs.length; i++) {
-        if ($scope.celebs[i].id === $scope.vm.celebId) return $scope.celebs[i];
-      }
-    };
-
-    $scope.onRent = function() {
-      alert('Rented ' + $scope.movieData().title + '!');
-      $location.path('');
-    };
-
-  });
 
 // should listen for routeChange events and automatically apply any matching states
 // should also be able to use like:
@@ -272,6 +189,120 @@ angular
     }
   });
 
+
+angular
+  .module('dtv.demo.routes', ['sdw.viewmodel'])
+
+  .config(function(viewmodelProvider) {
+
+    viewmodelProvider
+      .otherwise('browse')
+
+      // route #/browse
+
+      .state('browse', {
+        route: '',
+        action: function(vm, params) {
+          vm.showModal = false;
+        }
+      })
+
+      // route #/movie/:movie
+
+      .state('browse.movie', {
+        route: '/movie/:movie',
+        action: function(vm, params) {
+          vm.showModal = true;
+          vm.modalView = 'movie';
+          vm.movieId = +params.movie;
+        }
+      })
+
+      // route #/movie/:movie/rent
+
+      .state('browse.movie.rent', {
+        route: '/rent',
+        action: function(vm, params) {
+          vm.modalView = 'rent';
+        }
+      })
+
+      // route #/celebrity/:name
+
+      .state('browse.celebrity', {
+        route: '/celebrity/:celeb',
+        action: function(vm, params) {
+          vm.showModal = true;
+          vm.modalView = 'celebrity';
+          vm.celebId = +params.celeb;
+        }
+      });
+
+  })
+
+  .controller('RouteController', function($scope, $location, viewmodel) {
+
+    $scope.movies = [
+      { id: 123, title: 'The Shawshank Redemption', celeb: 333 },
+      { id: 234, title: 'Garden State', celeb: 444 },
+      { id: 345, title: 'Crouching Tiger, Hidden Dragon', celeb: 555 }
+    ];
+
+    $scope.celebs = [
+      { id: 333, name: 'Morgan Freeman' },
+      { id: 444, name: 'Zach Braff' },
+      { id: 555, name: 'Chow Yun Fat' }
+    ];
+
+    $scope.movieData = function() {
+      for (var i = 0; i < $scope.movies.length; i++) {
+        if ($scope.movies[i].id === $scope.vm.movieId) return $scope.movies[i];
+      }
+    };
+
+    $scope.celebData = function() {
+      for (var i = 0; i < $scope.celebs.length; i++) {
+        if ($scope.celebs[i].id === $scope.vm.celebId) return $scope.celebs[i];
+      }
+    };
+
+    $scope.onRent = function() {
+      alert('Rented ' + $scope.movieData().title + '!');
+      $location.path('');
+    };
+
+  });
+
+angular
+  .module('examples.simple', ['sdw.viewmodel'])
+  .config(function(viewmodelProvider) {
+
+    viewmodelProvider
+
+      .state('default', {
+        route: '',
+        action: function(vm, params) {
+          vm.showModal = false;
+          vm.article = '';
+          vm.showPrice = false;
+        }
+      })
+
+      .state('article', {
+        route: '/article/:article',
+        action: function(vm, params) {
+          vm.showModal = true;
+          vm.article = params.article;
+        }
+      })
+
+      .state('article.buy', {
+        route: '/buy',
+        action: function(vm, params) {
+          vm.showPrice = true;
+        }
+      });
+  });
 
 angular.module('templates-app', []);
 

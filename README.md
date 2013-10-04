@@ -7,32 +7,35 @@ A View Model that watches routes and binds them to cascading states in your app.
 View
 
 ```html
-<body ng-controller='DemoController'>
-  <section sdw-viewmodel='vm'>
-    <div class='overlay' ng-show='vm.showModal'>
+<a href='#/article/first'>First article</a>,
+<a href='#/article/second'>Second article</a>
 
-      <article ng-show='vm.article === "first"'>
+<section sdw-viewmodel='vm'>
+  <div class='modal' ng-class='{ active: vm.showModal }'>
+
+    <ng-switch on='vm.article'>
+      <article ng-switch-when='first'>
         <h1>First</h1>
         <a href='#/article/{{ vm.article }}/buy'>Buy</a>
         <p ng-show='vm.showPrice'>$10.00</p>
       </article>
 
-      <article ng-show='vm.article === "second"'>
+      <article ng-switch-when='second'>
         <h2>Second</h2>
         <a href='#/article/{{ vm.article }}/buy'>Buy</a>
         <p ng-show='vm.showPrice'>$14.00</p>
       </article>
+    </ng-switch>
 
-    </div>
-  </section>
-</body>
+  </div>
+</section>
 ```
 
 Module
 
 ```js
 angular
-  .module('viewmodel.demo', ['sdw.viewmodel'])
+  .module('examples.simple', ['sdw.viewmodel'])
   .config(function(viewmodelProvider) {
 
     viewmodelProvider
@@ -60,9 +63,6 @@ angular
           vm.showPrice = true;
         }
       });
-  })
-  .controller('DemoController', function($scope, $location, viewmodel) {
-
   });
 ```
 
