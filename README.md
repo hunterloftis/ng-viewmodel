@@ -8,19 +8,21 @@ the color of an element.
 
 ## Quick Start
 
-1. Create a viewmodel with the `sdw-viewmodel` directive:
+1. Include [sdw-viewmodel.js](https://github.com/hunterloftis/ng-viewmodel/blob/master/dist/assets/sdw-viewmodel.js) in your page
+
+2. Create a viewmodel with the `sdw-viewmodel` directive:
 
 ```js
 <section sdw-viewmodel='myViewmodel'>
 ```
 
-2. Inside the viewmodel, bind view states to properties on the viewmodel object:
+3. Inside the viewmodel, bind view states to properties on the viewmodel object:
 
 ```js
 <article ng-show='myViewmodel.helloIsVisible'>Hello, {{ myViewmodel.helloName }}!</article>
 ```
 
-3. In your app's config, inject the viewmodelProvider and set up your routes and the states you'd like attached to each:
+4. In your app's config, inject the viewmodelProvider and set up your routes and the states you'd like attached to each:
 
 ```js
 viewmodelProvider.state('message', {
