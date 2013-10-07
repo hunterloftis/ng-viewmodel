@@ -52,6 +52,10 @@
         margin-top: 0;
       }
 
+      .modal.isAlt {
+        background: #700;
+      }
+
       .modal-close {
         position: absolute;
         right: 20px;
@@ -74,11 +78,11 @@
     <a href='#/article/first'>First article</a>,
     <a href='#/article/second'>Second article</a>
     <section sdw-viewmodel='vm'>
-      <div class='modal' ng-class='{ active: vm.showModal }'>
+      <div class='modal' ng-class='{ active: vm.showModal, isAlt: vm.useAltStyle }'>
 
         <ng-switch on='vm.article'>
           <article ng-switch-when='first'>
-            <h1>First</h1>
+            <h2>First</h2>
             <a href='#/article/{{ vm.article }}/buy'>Buy</a>
             <p ng-show='vm.showPrice'>$10.00</p>
           </article>

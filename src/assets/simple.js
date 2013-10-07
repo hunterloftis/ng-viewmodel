@@ -4,8 +4,9 @@ angular
 
     viewmodelProvider
 
+      .fallback('default')
+
       .state('default', {
-        route: '',
         action: function(vm, params) {
           vm.showModal = false;
           vm.article = '';
@@ -26,5 +27,9 @@ angular
         action: function(vm, params) {
           vm.showPrice = true;
         }
+      })
+
+      .param('alt', function(vm, param) {
+        vm.useAltStyle = (param === 'true');
       });
   });

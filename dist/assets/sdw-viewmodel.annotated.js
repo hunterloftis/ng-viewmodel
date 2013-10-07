@@ -3,6 +3,7 @@
     var self = this;
     var states = {};
     var defaultState;
+    var params = {};
     var routes = [];
     this.state = function (name, options) {
       states[name] = {
@@ -11,7 +12,10 @@
       };
       return this;
     };
-    this.otherwise = function (newDefault) {
+    this.param = function (name, action) {
+      params[name] = action;
+    };
+    this.fallback = function (newDefault) {
       defaultState = newDefault;
       return this;
     };
@@ -39,11 +43,19 @@
           }
         }
         function onLocationChange() {
-          var match = matchRoute($location.path()) || {
-              state: defaultState,
-              params: {}
-            };
-          applyState($rootScope, match.state, match.params);
+          var match = matchRoute($location.path());
+          if (match)
+            applyState($rootScope, match.state, match.params);
+          else if (defaultState)
+            applyState($rootScope, defaultState, {});
+          else
+            applyDefaults();
+          var search = $location.search();
+          var newState = {};
+          for (var key in params) {
+            params[key](newState, search[key]);
+          }
+          $rootScope.$broadcast('viewmodel:state', newState);
         }
       }
     ];
@@ -219,8 +231,7 @@
   angular.module('examples.simple', ['sdw.viewmodel']).config([
     'viewmodelProvider',
     function (viewmodelProvider) {
-      viewmodelProvider.state('default', {
-        route: '',
+      viewmodelProvider.fallback('default').state('default', {
         action: function (vm, params) {
           vm.showModal = false;
           vm.article = '';
@@ -237,6 +248,8 @@
         action: function (vm, params) {
           vm.showPrice = true;
         }
+      }).param('alt', function (vm, param) {
+        vm.useAltStyle = param === 'true';
       });
     }
   ]);
