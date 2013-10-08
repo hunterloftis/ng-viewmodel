@@ -30,6 +30,7 @@ angular
       })
 
       .param('alt', function(vm, param) {
+        console.log('alt');
         vm.useAltStyle = (param === 'true');
       });
   });

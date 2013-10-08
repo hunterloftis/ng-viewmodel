@@ -83,7 +83,7 @@ angular
         var search = $location.search();
         var newState = {};
         for (var key in params) {
-          params[key](newState, search[key]);
+          if (typeof search[key] !== 'undefined') params[key](newState, search[key]);
         }
         $rootScope.$broadcast('viewmodel:state', newState);
       }
@@ -320,6 +320,7 @@ angular
       })
 
       .param('alt', function(vm, param) {
+        console.log('alt');
         vm.useAltStyle = (param === 'true');
       });
   });
